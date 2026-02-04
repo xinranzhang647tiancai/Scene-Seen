@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>观影数据可视化</title>
+    
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        /* 电影展示样式 */
+        .movie-showcase {
+            width: calc(100% - 0.2rem);
+            height: calc(100% - 0.6rem);
+            margin: 0.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #movie-container {
+            height: 2.2rem;
+            position: relative;
+        }
+        
+        .movie-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            padding: 0.2rem;
+            box-sizing: border-box;
+        }
+        
+        .movie-slide.active {
+            opacity: 1;
+        }
+        
+        .movie-slide h3 {
+            color: #59ebe8;
+            font-size: 0.24rem;
+            margin-bottom: 0.1rem;
+            text-shadow: 0 0 0.1rem #00d8ff;
+        }
+        
+        .movie-slide .rating {
+            color: #ffd700;
+            font-size: 0.2rem;
+            margin-bottom: 0.15rem;
+            font-weight: bold;
+        }
+        
+        .movie-slide p {
+            color: #ffffff;
+            font-size: 0.18rem;
+            line-height: 0.28rem;
+            text-align: justify;
+        }
+        
+        .scroll-indicators {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.08rem;
+        }
+        
+        .scroll-indicators .indicator {
+            width: 0.1rem;
+            height: 0.1rem;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .scroll-indicators .indicator.active {
+            background-color: #59ebe8;
+            box-shadow: 0 0 0.1rem #00d8ff;
+        }
+        
+        /* 删除或注释掉电影资讯相关样式 */
+        /*#movie-news {
+            width: calc(100% - 0.2rem);
+            height: 2.6rem;
+            margin: 0.1rem;
+            padding: 0.2rem;
+            box-sizing: border-box;
+        }
+        
+        #movie-news p {
+            color: #ffffff;
+            font-size: 0.18rem;
+            line-height: 0.32rem;
+            margin-bottom: 0.2rem;
+        }*/
+    </style>
+    <style>
+        /* 数字时钟样式 - 添加到这里 */
+        .digital-clock {
+            font-family: 'Microsoft YaHei', sans-serif;
+            font-size: 0.2rem;
+            color: #00d8ff;
+            text-align: center;
+            line-height: 1.05rem;
+            letter-spacing: 1px;
+            text-shadow:
+                0 0 5px rgba(0, 216, 255, 0.7),
+                0 0 10px rgba(0, 216, 255, 0.5);
+        }
+        
+        /* 时间数字样式 */
+        .time-number {
+            display: inline-block;
+            min-width: 0.25rem;
+            padding: 0 2px;
+            transition: all 0.3s ease;
+        }
+        
+        /* 日期部分特殊样式 */
+        .date-part {
+            color: #59ebe8;
+            font-weight: bold;
+        }
+        
+        /* 时间部分特殊样式 */
+        .time-part {
+            color: #ffd700;
+        }
+        
+        /* 星期部分特殊样式 */
+        .week-part {
+            color: #ffffff;
+            margin-left: 5px;
+            font-style: italic;
+        }
+        
+        /* 分隔符样式 */
+        .time-separator {
+            display: inline-block;
+            margin: 0 3px;
+            color: #00d8ff;
+            opacity: 0.7;
+        }
+    </style>
+    <script src="js/jquery.js"></script>
+    <script>
+        $(function () {
+            // 电影滑动展示功能
+            let currentSlide = 0;
+            const slides = $('.movie-slide');
+            const indicators = $('.indicator');
+            const totalSlides = slides.length;
+            let isForward = true;
+            
+            function showSlide(index) {
+                slides.removeClass('active');
+                indicators.removeClass('active');
+                slides.eq(index).addClass('active');
+                indicators.eq(index).addClass('active');
+                currentSlide = index;
+            }
+            
+            function nextSlide() {
+                if (isForward) {
+                    if (currentSlide === totalSlides - 1) {
+                        isForward = false;
+                        showSlide(currentSlide - 1);
+                    } else {
+                        showSlide(currentSlide + 1);
+                    }
+                } else {
+                    if (currentSlide === 0) {
+                        isForward = true;
+                        showSlide(currentSlide + 1);
+                    } else {
+                        showSlide(currentSlide - 1);
+                    }
+                }
+            }
+            
+            // 每4秒自动切换幻灯片
+            setInterval(nextSlide, 4000);
+            
+            // 点击指示器切换幻灯片
+            indicators.click(function() {
+                const index = $(this).index();
+                showSlide(index);
+                // 更新滚动方向
+                isForward = index > currentSlide;
+            });
+            $('.myscroll').myScroll({
+                speed: 60, //数值越大，速度越慢
+                rowHeight: 38 //li的高度
+            });
+        });
+        
+        $(document).ready(function () {
+            var whei = $(window).width()
+            $("html").css({ fontSize: whei / 22 });
+            $(window).resize(function () {
+                var whei = $(window).width();
+                $("html").css({ fontSize: whei / 22 })
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div class="main">
+    <div class="header">
+        <div class="header-left fl" id="time"></div>
+        <div class="header-center fl">
+            <div class="header-title">
+                猫眼电影
+            </div>
+            <div class="header-img"></div>
+        </div>
+        <div class="header-right fl">
+            <!-- 今日影讯链接 -->
+            <a href="https://maoyan.com/" target="_blank" class="movie-news-link">
+                <span class="news-text">今日影讯</span>
+                <span class="news-arrow">→</span>
+            </a>
+        </div>
+        <div class="header-bottom fl"></div>
+
+    </div>
+
+    <div class="center">
+        <div class="center-left fl">
+            <div class="left-top">
+                <div class="title">受众群体数据概括</div>
+                <!-- 调整图表容器的样式和位置，确保足够空间显示图例 -->
+                <div id="audienceChartContainer" style="width: 100%; height: calc(100% - 20px); display: flex; justify-content: center; align-items: center;">
+                    <div id="audienceChart" style="width: 95%; height: 95%;"></div>
+                </div>
+            </div>
+            <div class="left-cen">
+                <div class="title">电影梗概</div>
+                <div class="movie-showcase">
+                    <!-- 电影梗概展示区域 -->
+                    <div id="movie-container">
+                        <div class="movie-slide active">
+                            <h3>《宇宙探索编辑部》</h3>
+                            <div class="rating">评分：8.8</div>
+                            <p>这是一部关于一位科幻杂志编辑寻找外星生命的荒诞喜剧。主角唐志军深信外星人的存在，在收到神秘信号后，他与一群性格各异的伙伴踏上了一段充满未知的旅程。影片融合了科幻、荒诞和哲学元素，探讨了人类存在的意义。</p>
+                        </div>
+                        <div class="movie-slide">
+                            <h3>《消失的她》</h3>
+                            <div class="rating">评分：8.5</div>
+                            <p>一对夫妻出国旅行时，妻子突然神秘失踪。丈夫在寻找过程中发现了一系列令人震惊的线索，揭开了一个精心策划的阴谋。影片充满悬疑和反转，展现了人性的复杂性。</p>
+                        </div>
+                        <div class="movie-slide">
+                            <h3>《封神第一部》</h3>
+                            <div class="rating">评分：9.0</div>
+                            <p>改编自中国古典神话《封神演义》的史诗级电影。讲述了商纣王暴虐无道，周文王姬昌揭竿而起，姜子牙下山助周伐纣的故事。影片特效震撼，重现了原著中的经典场景和人物。</p>
+                        </div>
+                        <div class="movie-slide">
+                            <h3>《八角笼中》</h3>
+                            <div class="rating">评分：9.3</div>
+                            <p>一个平凡的格斗教练，带领一群来自山区的孩子通过格斗改变命运的故事。影片真实反映了底层人民的生活困境，同时展现了人性的坚韧和希望。</p>
+                        </div>
+                        <div class="movie-slide">
+                            <h3>《坏蛋联盟2》</h3>
+                            <div class="rating">评分：7.9</div>
+                            <p>热门动画电影《坏蛋联盟》的续作。讲述了五个臭名昭著的坏蛋决定改过自新，但当一个更大的威胁出现时，他们必须再次联手拯救世界。影片幽默风趣，充满正能量。</p>
+                        </div>
+                    </div>
+                    <div class="scroll-indicators">
+                        <span class="indicator active"></span>
+                        <span class="indicator"></span>
+                        <span class="indicator"></span>
+                        <span class="indicator"></span>
+                        <span class="indicator"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- 删除空的left-bottom容器 -->
+        </div>
+        <div class="center-cen fl">
+            <div class="cen-top">
+                <!-- 完全删除数量统计区域，包括以下所有代码 -->
+                <!-- <div class="top-title">
+                    <ul>
+                        <li>
+                            <p>数量统计</p>
+                            <span>3</span>
+                            <span>6</span>
+                            <span>5</span>
+                            <b>个</b>
+                        </li>
+                        <li>
+                            <p>同比上升</p>
+                            <span>1</span>
+                            <span>3</span>
+                            <b>%</b>
+                        </li>
+                    </ul>
+                </div> -->
+                
+                <!-- 将票房数据标题向上移动 -->
+                <div class="top-bottom">
+                    <div class="title">票房数据</div>
+                    <div id="chart1" class="allnav"></div>
+                </div>
+
+
+            </div>
+            <div class="cen-bottom">
+                <div class="title">观影人次</div>
+                <!-- 添加图表容器 -->
+                <!-- 修改图表容器，确保有足够高度显示8个电影 -->
+                <div class="allnav" id="vehicleChart" style="width: 100%; height: 450px;"></div>
+                
+                <script>
+                    // 电影观影人次统计图表实现
+                    const labelSetting = {
+                      show: true,
+                      position: 'right',
+                      offset: [10, 0],
+                      fontSize: 16,
+                      color: '#00e5ff' // 霓虹青色文字
+                    };
+                
+                    function makeOption(type, visibleMovies, visibleDataToday, visibleDataYesterday) {
+                      // 定义科技感渐变色
+                      const blueGradient = new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                        { offset: 0, color: '#0091ff' },
+                        { offset: 1, color: '#00e5ff' }
+                      ]);
+                      
+                      const purpleGradient = new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                        { offset: 0, color: '#7b42f6' },
+                        { offset: 1, color: '#d13adc' }
+                      ]);
+                
+                      return {
+                        backgroundColor: 'transparent', // 透明背景，配合页面深色背景
+                        title: {
+                          text: '',
+                          top: '-2px', // 从1px调整为-2px，向上移动3px
+                          left: '46%', // 从48%调整为46%，向左移动2%
+                          textStyle: {
+                            color: '#00e5ff',
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            // 添加文字发光效果
+                            textShadowBlur: 10,
+                            textShadowColor: '#00e5ff'
+                          }
+                        },
+                        legend: {
+                          data: ['今日观影人次', '昨日观影人次'],
+                          textStyle: {
+                            color: '#ffffff'
+                          },
+                          itemWidth: 12,
+                          itemHeight: 12,
+                          top: 30
+                        },
+                        tooltip: {
+                          trigger: 'axis',
+                          axisPointer: {
+                            type: 'shadow',
+                            shadowStyle: {
+                              color: 'rgba(0, 229, 255, 0.1)'
+                            }
+                          },
+                          backgroundColor: 'rgba(13, 20, 41, 0.85)',
+                          borderColor: '#00e5ff',
+                          textStyle: {
+                            color: '#ffffff'
+                          },
+                          formatter: function(params) {
+                            let result = params[0].name + '<br/>';
+                            params.forEach(param => {
+                              result += `${param.marker}${param.seriesName}: ${param.value.toLocaleString()} 人次<br/>`;
+                            });
+                            return result;
+                          }
+                        },
+                        grid: {
+                          containLabel: true,
+                          left: 10,  // 从20px调整为10px，向左移动10px
+                          top: 60,   // 从80px调整为60px，向上移动20px
+                          right: 10,
+                          bottom: 30, // 从20px调整为30px，增加底部空间防止横轴被遮盖
+                          // 添加边框
+                          show: true,
+                          borderColor: 'rgba(0, 229, 255, 0.2)'
+                        },
+                        yAxis: {
+                          data: visibleMovies,
+                          inverse: true,
+                          axisLine: {
+                            show: true,
+                            lineStyle: {
+                              color: 'rgba(0, 229, 255, 0.3)'
+                            }
+                          },
+                          axisTick: { show: false },
+                          axisLabel: {
+                            margin: 30,
+                            fontSize: 14,
+                            color: '#ffffff'
+                          },
+                          axisPointer: {
+                            label: {
+                              show: true,
+                              margin: 30,
+                              backgroundColor: 'rgba(13, 20, 41, 0.8)',
+                              borderColor: '#00e5ff',
+                              color: '#ffffff'
+                            }
+                          },
+                          // 添加分割线
+                          splitLine: {
+                            show: true,
+                            lineStyle: {
+                              color: 'rgba(0, 229, 255, 0.1)'
+                            }
+                          }
+                        },
+                        xAxis: {
+                          splitLine: {
+                            show: true,
+                            lineStyle: {
+                              color: 'rgba(0, 229, 255, 0.1)'
+                            }
+                          },
+                          axisLabel: {
+                            show: true,
+                            color: '#ffffff',
+                            formatter: function(value) {
+                              return value >= 1000 ? (value / 1000) + 'k' : value;
+                            }
+                          },
+                          axisTick: { show: false },
+                          axisLine: {
+                            show: true,
+                            lineStyle: {
+                              color: 'rgba(0, 229, 255, 0.3)'
+                            }
+                          }
+                        },
+                        animationDurationUpdate: 1000,
+                        series: [
+                          {
+                            name: '今日观影人次',
+                            id: 'today',
+                            type: type,
+                            label: labelSetting,
+                            barCategoryGap: '40%',
+                            universalTransition: {
+                              enabled: true,
+                              delay: function (idx, total) {
+                                return (idx / total) * 1000;
+                              }
+                            },
+                            data: visibleDataToday,
+                            // 使用渐变填充
+                            itemStyle: {
+                              color: blueGradient,
+                              // 添加边框和阴影增强科技感
+                              borderColor: '#00e5ff',
+                              borderWidth: 1,
+                              shadowBlur: 10,
+                              shadowColor: 'rgba(0, 229, 255, 0.5)'
+                            }
+                          },
+                          {
+                            name: '昨日观影人次',
+                            id: 'yesterday',
+                            type: type,
+                            barGap: '10%',
+                            label: {
+                              ...labelSetting,
+                              color: '#d13adc' // 紫色文字
+                            },
+                            universalTransition: {
+                              enabled: true,
+                              delay: function (idx, total) {
+                                return (idx / total) * 1000;
+                              }
+                            },
+                            data: visibleDataYesterday,
+                            // 使用渐变填充
+                            itemStyle: {
+                              color: purpleGradient,
+                              // 添加边框和阴影增强科技感
+                              borderColor: '#d13adc',
+                              borderWidth: 1,
+                              shadowBlur: 10,
+                              shadowColor: 'rgba(209, 58, 220, 0.5)'
+                            }
+                          }
+                        ]
+                      };
+                    }
+                
+                    function initVehicleCharts() {
+                        // 获取所有电影名称
+                        const allMovies = ['流浪地球2', '八角笼中', '满江红', '深海', '封神第一部', '宇宙探索编辑部', '无名', '南京照相馆', '消失的她', '浪浪山小妖怪', '捕风追影', '东极岛'];
+                          
+                        // 为所有电影生成随机观影人次数据
+                        const allDataToday = allMovies.map(() => Math.floor(Math.random() * 10000) + 5000);
+                        const allDataYesterday = allMovies.map((movie, index) => Math.floor(allDataToday[index] * (0.8 + Math.random() * 0.2)));
+                          
+                        // 初始化一个图表
+                        const chart = echarts.init(document.getElementById('vehicleChart'));
+                          
+                        // 每页显示的电影数量
+                        const pageSize = 6; // 从7改为6
+                        // 当前起始索引
+                        let currentStartIndex = 0;
+                        
+                        // 初始加载数据
+                        const initialMovies = allMovies.slice(0, pageSize);
+                        const initialDataToday = allDataToday.slice(0, pageSize);
+                        const initialDataYesterday = allDataYesterday.slice(0, pageSize);
+                        
+                        // 设置初始选项
+                        const option = makeOption('bar', initialMovies, initialDataToday, initialDataYesterday);
+                        chart.setOption(option);
+
+                        // 添加每秒不规则刷新数字的功能
+                        setInterval(() => {
+                            // 确定当前显示的电影索引范围
+                            const visibleMovies = [];
+                            const visibleIndices = [];
+                             
+                            for (let i = 0; i < pageSize; i++) {
+                                const index = (currentStartIndex + i) % allMovies.length;
+                                visibleMovies.push(allMovies[index]);
+                                visibleIndices.push(index);
+                            }
+                             
+                            // 随机选择1-3部当前显示的电影进行数据更新
+                            const updateCount = Math.floor(Math.random() * 3) + 1;
+                            const updatedIndices = new Set();
+                             
+                            while (updatedIndices.size < updateCount) {
+                                const randomIndex = visibleIndices[Math.floor(Math.random() * visibleIndices.length)];
+                                updatedIndices.add(randomIndex);
+                            }
+                             
+                            // 对选中的电影进行数据更新
+                            updatedIndices.forEach(index => {
+                                // 在当前值的基础上进行小幅度不规则波动(±1%-±5%)
+                                const fluctuationFactor = 0.95 + Math.random() * 0.1;
+                                allDataToday[index] = Math.max(1000, Math.floor(allDataToday[index] * fluctuationFactor));
+                                 
+                                // 根据今天的数据更新昨天的数据，保持合理的比例关系
+                                allDataYesterday[index] = Math.floor(allDataToday[index] * (0.8 + Math.random() * 0.2));
+                            });
+                             
+                            // 更新当前显示的图表数据
+                            const newDataToday = visibleIndices.map(index => allDataToday[index]);
+                            const newDataYesterday = visibleIndices.map(index => allDataYesterday[index]);
+                             
+                            chart.setOption({
+                                series: [
+                                    {
+                                        id: 'today',
+                                        data: newDataToday,
+                                        // 添加平滑过渡动画
+                                        animationDurationUpdate: 1000,
+                                        animationEasingUpdate: 'cubicInOut'
+                                    },
+                                    {
+                                        id: 'yesterday',
+                                        data: newDataYesterday,
+                                        // 添加平滑过渡动画
+                                        animationDurationUpdate: 1000,
+                                        animationEasingUpdate: 'cubicInOut'
+                                    }
+                                ]
+                            });
+                        }, 2000); // 从1000ms改为2000ms，减少更新频率
+                        
+                        // 实现单部电影滚动效果
+                        function scrollChart() {
+                            // 移除第一个数据项（向左消逝）
+                            chart.dispatchAction({
+                                type: 'dataZoom',
+                                start: 0,
+                                end: 100,
+                                dataZoomIndex: 0,
+                                // 使用自定义动画效果
+                                animation: {
+                                    duration: 1500,
+                                    easing: 'cubicInOut'
+                                }
+                            });
+                             
+                            // 延迟一小段时间后更新数据
+                            setTimeout(() => {
+                                // 更新起始索引
+                                currentStartIndex = (currentStartIndex + 1) % allMovies.length;
+                                 
+                                // 计算新的数据范围
+                                const newMovies = [];
+                                const newDataToday = [];
+                                const newDataYesterday = [];
+                                 
+                                for (let i = 0; i < pageSize; i++) {
+                                    const index = (currentStartIndex + i) % allMovies.length;
+                                    newMovies.push(allMovies[index]);
+                                    newDataToday.push(allDataToday[index]);
+                                    newDataYesterday.push(allDataYesterday[index]);
+                                }
+                                 
+                                // 更新图表数据
+                                chart.setOption({
+                                    yAxis: {
+                                        data: newMovies,
+                                        // 添加平滑过渡动画
+                                        animationDurationUpdate: 1500,
+                                        animationEasingUpdate: 'cubicInOut'
+                                    },
+                                    series: [
+                                        {
+                                            id: 'today',
+                                            data: newDataToday,
+                                            // 添加平滑过渡动画
+                                            animationDurationUpdate: 1500,
+                                            animationEasingUpdate: 'cubicInOut'
+                                        },
+                                        {
+                                            id: 'yesterday',
+                                            data: newDataYesterday,
+                                            // 添加平滑过渡动画
+                                            animationDurationUpdate: 1500,
+                                            animationEasingUpdate: 'cubicInOut'
+                                        }
+                                    ]
+                                });
+                            }, 750);
+                        }
+                         
+                        // 设置定时器，每5秒滚动一次
+                        const scrollInterval = setInterval(scrollChart, 5000);
+                        
+                        // 响应窗口大小变化
+                        window.addEventListener('resize', function() {
+                            chart.resize();
+                        });
+                        
+                        // 清理函数
+                        window.addEventListener('unload', function() {
+                            clearInterval(scrollInterval);
+                        });
+                    }
+                
+                    // 当页面加载完成后初始化图表
+                    window.addEventListener('load', function() {
+                        initVehicleCharts();
+                    });
+                </script>
+            </div>
+        </div>
+        <!-- 找到右侧区域的相关代码，修改为以下内容 -->
+        <div class="center-right fr">
+            <div class="right-top">
+                <div class="title">热度排行</div>
+                
+                <!-- 添加电影评分排行榜 -->
+                <div class="rating-ranking" style="padding: 15px;">
+                    <div class="ranking-list">
+                        <!-- 排名将通过JavaScript动态生成 -->
+                    </div>
+                    <!-- 添加新的说明文字区域 -->
+                <div class="ranking-description" style="margin-top: 10px; text-align: center; line-height: 1.4; padding-top: 10px; border-top: 1px solid rgba(0, 229, 255, 0.1);">
+                    <!-- 添加动态效果 -->
+                    <span class="tech-text" style="font-size: 18px; font-weight: bold; color: rgba(173, 216, 230, 0.8); text-shadow: 0 0 5px rgba(173, 216, 230, 0.5); animation: textPulse 3s ease-in-out infinite; display: inline-block;">实时热度由观影人次和评分共同决定</span>
+                </div>
+                </div>
+                
+                <div class="echart wenzi" style="display: none;">
+                    <!-- 此区域内容已隐藏 -->
+                </div>
+            </div>
+            <style>
+            @keyframes textPulse {
+                0%, 100% {
+                    opacity: 0.8;
+                    transform: scale(1);
+                    color: rgba(173, 216, 230, 0.8);
+                    text-shadow: 0 0 5px rgba(173, 216, 230, 0.5);
+                }
+                50% {
+                    opacity: 1;
+                    transform: scale(1.03);
+                    color: rgba(173, 216, 230, 1);
+                    text-shadow: 0 0 15px rgba(173, 216, 230, 0.8), 0 0 30px rgba(0, 229, 255, 0.3);
+                }
+            }
+            </style>
+            <!-- 删除票房趋势区域，将电影类型分布图扩大为一整块 -->
+            <div class="right-cen-full">
+                <div class="title">电影类型及其场次分布</div>
+                <div id="chart2" class="allnav"></div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script src="js/jquery.min.js"></script>
+<script src="js/echarts.min.js"></script>
+<!-- 注释掉不存在的文件 -->
+<!-- <script src="js/wodry.min.js"></script> -->
+<script src="js/fontscroll.js"></script>
+<script src="js/echarts.js"></script>
+<!-- 添加对douban.js的引用 -->
+<script src="js/douban.js"></script>
+
+<script>
+    /*$('#ceshi').wodry({
+
+        animation: 'rotateX',
+
+        delay: 1000,
+
+        animationDuration: 800
+
+    });*/
+    /*window.onload = function () {
+        setInterval(function () {
+            var hs=document.getElementById("ceshi");
+            var hstyle=hs.style.transform;
+            if(hstyle=='rotateX(-360deg)'){
+                //console.log(1)
+                hs.style.transform='rotateX(0deg)';
+                hs.style.transform='transform 500ms cubic-bezier(0.55, 0.18, 0.92, 0.46) 0s;'
+            }else {
+                hs.style.transform='rotateX(-360deg)';
+                hs.style.transition="all 2s";
+            }
+        }, 5000);
+    };*/
+
+    //顶部时间
+    function getTime(){
+        var myDate = new Date();
+        var myYear = myDate.getFullYear(); //获取完整的年份(4位,1970-????)
+        var myMonth = myDate.getMonth()+1; //获取当前月份(0-11,0代表1月)
+        var myToday = myDate.getDate(); //获取当前日(1-31)
+        var myDay = myDate.getDay(); //获取当前星期X(0-6,0代表星期天)
+        var myHour = myDate.getHours(); //获取当前小时数(0-23)
+        var myMinute = myDate.getMinutes(); //获取当前分钟数(0-59)
+        var mySecond = myDate.getSeconds(); //获取当前秒数(0-59)
+        var week = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+        var nowTime;
+
+        nowTime = myYear+'-'+fillZero(myMonth)+'-'+fillZero(myToday)+'&nbsp;&nbsp;'+fillZero(myHour)+':'+fillZero(myMinute)+':'+fillZero(mySecond)+'&nbsp;&nbsp;'+week[myDay]+'&nbsp;&nbsp;';
+        //console.log(nowTime);
+        $('#time').html(nowTime);
+    };
+    function fillZero(str){
+        var realNum;
+        if(str<10){
+            realNum	= '0'+str;
+        }else{
+            realNum	= str;
+        }
+        return realNum;
+    }
+    setInterval(getTime,1000);
+
+    // 将原本在</html>标签后的JavaScript代码移动到这里
+    function ceshis() {
+        var myChart = echarts.init(document.getElementById('chart1'));
+
+        // 电影票房数据（按照评分从高到低排序）
+        var moviesBoxOfficeData = [
+            { name: '流浪地球2', boxOffice: 40.2, rating: 9.5 },
+            { name: '八角笼中', boxOffice: 22.3, rating: 9.3 },
+            { name: '满江红', boxOffice: 45.4, rating: 9.2 },
+            { name: '深海', boxOffice: 9.1, rating: 9.1 },
+            { name: '封神第一部', boxOffice: 26.3, rating: 9.0 },
+            { name: '熊出没·伴我熊芯', boxOffice: 14.8, rating: 8.9 },
+            { name: '宇宙探索编辑部', boxOffice: 8.7, rating: 8.8 },
+            { name: '无名', boxOffice: 9.3, rating: 8.7 },
+            { name: '南京照相馆', boxOffice: 25.1, rating: 8.7 },
+            { name: '消失的她', boxOffice: 35.2, rating: 8.5 },
+            { name: '浪浪山小妖怪', boxOffice: 16.2, rating: 7.2 },
+            { name: '捕风追影', boxOffice: 12.6, rating: 7.3 },
+            { name: '东极岛', boxOffice: 8.9, rating: 7.0 }
+        ];
+
+        // 提取电影名称、票房和评分数据
+        var movieNames = moviesBoxOfficeData.map(item => item.name);
+        var boxOfficeData = moviesBoxOfficeData.map(item => item.boxOffice);
+        var ratingData = moviesBoxOfficeData.map(item => item.rating);
+    }
+
+    // 初始化电影评分排行榜
+    function initMovieRatingRanking() {
+        // 电影数据（包含评分和初始热度值）- 扩展到十几部电影
+        var moviesData = [
+            { name: '流浪地球2', rating: 9.5, heat: 8500 },
+            { name: '八角笼中', rating: 9.3, heat: 7800 },
+            { name: '满江红', rating: 9.2, heat: 8200 },
+            { name: '深海', rating: 9.1, heat: 6700 },
+            { name: '封神第一部', rating: 9.0, heat: 7200 },
+            { name: '熊出没·伴我熊芯', rating: 8.9, heat: 6500 },
+            { name: '宇宙探索编辑部', rating: 8.8, heat: 7000 },
+            { name: '无名', rating: 8.7, heat: 6300 },
+            { name: '南京照相馆', rating: 8.7, heat: 6100 },
+            { name: '消失的她', rating: 8.5, heat: 7500 },
+            { name: '捕风追影', rating: 8.6, heat: 6800 },
+            { name: '东极岛', rating: 9.4, heat: 8000 },
+            { name: '浪浪山小妖怪', rating: 9.3, heat: 7700 },
+            { name: '坏蛋联盟2', rating: 8.7, heat: 6900 },
+            
+        ];
+        
+        // 获取排行榜容器
+        var rankingContainer = document.querySelector('.ranking-list');
+        
+        // 每页显示的电影数量，将6改为5
+        const pageSize = 5;
+        let currentPage = 0;
+        
+        // 获取总页数
+        const totalPages = Math.ceil(moviesData.length / pageSize);
+        
+        // 渲染当前页排行榜函数
+        function renderCurrentPage() {
+            // 按热度从高到低排序
+            moviesData.sort((a, b) => b.heat - a.heat);
+            
+            // 清空容器
+            rankingContainer.innerHTML = '';
+            
+            // 计算当前页的电影范围
+            const startIndex = currentPage * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, moviesData.length);
+            
+            // 获取当前页的电影数据
+            const currentMovies = moviesData.slice(startIndex, endIndex);
+            
+            // 遍历当前页电影数据，创建排行项
+            currentMovies.forEach((movie, index) => {
+                // 创建排行项元素
+                var rankingItem = document.createElement('div');
+                rankingItem.className = 'ranking-item';
+                
+                // 设置排行项样式和初始位置（用于动画效果）
+                rankingItem.style.display = 'flex';
+                rankingItem.style.alignItems = 'center';
+                rankingItem.style.padding = '10px 0';
+                rankingItem.style.borderBottom = '1px solid rgba(0, 229, 255, 0.1)';
+                rankingItem.style.transform = 'translateX(100%)'; // 初始位置在右侧
+                rankingItem.style.opacity = '0';
+                rankingItem.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+                
+                // 创建排名元素（使用实际排名，而非页内排名）
+                var rankElement = document.createElement('div');
+                rankElement.className = 'ranking-number';
+                
+                // 获取电影在总榜中的实际排名
+                const actualRank = startIndex + index + 1;
+                
+                // 为前三名设置特殊样式
+                if (actualRank === 1) {
+                    rankElement.style.color = '#FFD700'; // 金色
+                    rankElement.style.fontWeight = 'bold';
+                    rankElement.style.fontSize = '20px';
+                } else if (actualRank === 2) {
+                    rankElement.style.color = '#C0C0C0'; // 银色
+                    rankElement.style.fontWeight = 'bold';
+                    rankElement.style.fontSize = '18px';
+                } else if (actualRank === 3) {
+                    rankElement.style.color = '#CD7F32'; // 铜色
+                    rankElement.style.fontWeight = 'bold';
+                    rankElement.style.fontSize = '16px';
+                } else {
+                    rankElement.style.color = '#ffffff';
+                    rankElement.style.fontSize = '14px';
+                }
+                
+                rankElement.style.width = '30px';
+                rankElement.style.textAlign = 'center';
+                rankElement.textContent = actualRank + '.';
+                
+                // 创建电影名称元素
+                var nameElement = document.createElement('div');
+                nameElement.className = 'movie-name';
+                nameElement.style.color = '#ffffff';
+                nameElement.style.marginLeft = '15px';
+                nameElement.style.flex = '1';
+                nameElement.textContent = movie.name;
+                
+                // 创建评分元素
+                var ratingElement = document.createElement('div');
+                ratingElement.className = 'movie-rating';
+                ratingElement.style.color = '#00e5ff';
+                ratingElement.style.fontWeight = 'bold';
+                ratingElement.style.marginRight = '15px';
+                ratingElement.textContent = movie.rating;
+                
+                // 创建热度元素
+                var heatElement = document.createElement('div');
+                heatElement.className = 'movie-heat';
+                heatElement.style.color = '#ff4500'; // 橙红色代表热度
+                heatElement.style.fontWeight = 'bold';
+                heatElement.textContent = movie.heat;
+                
+                // 添加热度图标
+                var heatIcon = document.createElement('span');
+                heatIcon.style.color = '#ff4500';
+                heatIcon.style.marginRight = '5px';
+                heatIcon.innerHTML = '&#128293;'; // 火焰图标
+                heatElement.prepend(heatIcon);
+                
+                // 组合元素
+                rankingItem.appendChild(rankElement);
+                rankingItem.appendChild(nameElement);
+                rankingItem.appendChild(ratingElement);
+                rankingItem.appendChild(heatElement);
+                
+                // 添加到容器
+                rankingContainer.appendChild(rankingItem);
+                
+                // 触发动画（使用延迟确保元素已添加到DOM）
+                setTimeout(() => {
+                    rankingItem.style.transform = 'translateX(0)';
+                    rankingItem.style.opacity = '1';
+                }, index * 100); // 每个元素依次出现，增加动感
+            });
+        }
+        
+        // 模拟热度变化函数 - 在原数值基础上实时刷新
+        function updateHeat() {
+            // 随机选择部分电影进行热度更新
+            const updateCount = Math.floor(Math.random() * 3) + 2; // 每次更新2-4部电影
+            const updatedIndices = new Set();
+            const updatedMovies = [];
+            
+            // 确保至少有一部电影热度上升或下降，增加排名变化的可能性
+            let hasIncrease = false;
+            let hasDecrease = false;
+            
+            while (updatedIndices.size < updateCount) {
+                const randomIndex = Math.floor(Math.random() * moviesData.length);
+                updatedIndices.add(randomIndex);
+            }
+            
+            // 更新选中电影的热度值（在原数值基础上变化）
+            updatedIndices.forEach(index => {
+                // 记录旧的热度值
+                const oldHeat = moviesData[index].heat;
+                
+                // 根据电影当前热度范围和随机因素，决定热度变化方向和幅度
+                let changeFactor;
+                if (Math.random() < 0.6) {
+                    // 60%的概率热度上升
+                    changeFactor = 1.02 + Math.random() * 0.08; // 热度增加2%-10%  
+                    hasIncrease = true;
+                } else {
+                    // 40%的概率热度下降
+                    changeFactor = 0.92 + Math.random() * 0.06; // 热度减少2%-8%
+                    hasDecrease = true;
+                }
+                
+                // 应用热度变化，但保持在合理范围内
+                const newHeat = Math.max(5000, Math.min(10000, Math.floor(oldHeat * changeFactor)));
+                
+                // 确保热度确实发生了变化
+                if (newHeat === oldHeat) {
+                    // 如果计算结果没有变化，手动调整1个单位
+                    moviesData[index].heat = oldHeat + (Math.random() < 0.5 ? 1 : -1);
+                } else {
+                    moviesData[index].heat = newHeat;
+                }
+                
+                // 记录变化的电影
+                if (moviesData[index].heat !== oldHeat) {
+                    updatedMovies.push({
+                        index: index,
+                        oldValue: oldHeat,
+                        newValue: moviesData[index].heat
+                    });
+                }
+            });
+            
+            // 确保至少有一部电影热度上升和一部下降，以保证排名变化
+            if (!hasIncrease) {
+                // 如果没有电影热度上升，强制一部电影热度上升
+                const randomIndex = Math.floor(Math.random() * moviesData.length);
+                const oldHeat = moviesData[randomIndex].heat;
+                moviesData[randomIndex].heat = Math.floor(moviesData[randomIndex].heat * 1.05);
+                updatedMovies.push({
+                    index: randomIndex,
+                    oldValue: oldHeat,
+                    newValue: moviesData[randomIndex].heat
+                });
+                hasIncrease = true;
+            }
+            
+            if (!hasDecrease && moviesData.length > 1) {
+                // 如果没有电影热度下降，强制一部电影热度下降
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * moviesData.length);
+                } while (randomIndex === (hasIncrease ? -1 : 0)); // 避免与强制上升的是同一部电影
+                const oldHeat = moviesData[randomIndex].heat;
+                moviesData[randomIndex].heat = Math.max(5000, Math.floor(moviesData[randomIndex].heat * 0.95));
+                if (moviesData[randomIndex].heat !== oldHeat) {
+                    updatedMovies.push({
+                        index: randomIndex,
+                        oldValue: oldHeat,
+                        newValue: moviesData[randomIndex].heat
+                    });
+                }
+            }
+            
+            return updatedMovies;
+        }
+        
+        // 增强的数字掀动动画效果函数
+        function animateNumberChange(element, start, end, duration = 800) {
+            if (!element) return;
+            
+            // 保存火焰图标
+            const iconSpan = element.querySelector('span');
+            const iconHTML = iconSpan ? iconSpan.outerHTML : '';
+            
+            // 设置元素样式以便数字变化更醒目
+            element.style.transition = 'all 0.15s ease-in-out';
+            element.style.position = 'relative';
+            
+            let startTime = null;
+            
+            function animate(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                
+                // 使用更复杂的缓动函数使动画更自然
+                const easeProgress = progress < 0.5 
+                    ? 4 * progress * progress * progress
+                    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+                
+                // 计算当前应该显示的数值
+                const currentValue = Math.floor(start + (end - start) * easeProgress);
+                
+                // 更新元素内容，保留火焰图标
+                element.innerHTML = iconHTML + currentValue;
+                
+                // 增强视觉效果
+                if (progress > 0 && progress < 1) {
+                    // 更强的缩放动画效果
+                    const scaleFactor = 1 + 0.2 * Math.sin(progress * Math.PI * 3);
+                    element.style.transform = `scale(${scaleFactor})`;
+                    
+                    // 更丰富的颜色变化效果
+                    if (end > start) {
+                        // 上升用从绿色到黄色的渐变
+                        const greenComponent = 255 - Math.floor(progress * 200);
+                        const redComponent = 150 + Math.floor(progress * 105);
+                        element.style.color = `rgb(${redComponent}, ${greenComponent}, 0)`;
+                    } else {
+                        // 下降用从红色到橙色的渐变
+                        const greenComponent = Math.floor(progress * 100);
+                        element.style.color = `rgb(255, ${greenComponent}, ${greenComponent})`;
+                    }
+                    
+                    // 添加脉冲光效
+                    if (Math.sin(progress * Math.PI * 5) > 0.8) {
+                        element.style.textShadow = '0 0 8px rgba(255, 69, 0, 0.8)';
+                    } else {
+                        element.style.textShadow = 'none';
+                    }
+                } else if (progress === 1) {
+                    // 动画结束，恢复原始样式
+                    element.style.transform = 'scale(1)';
+                    element.style.color = '#ff4500'; // 恢复为原始的橙红色
+                    element.style.textShadow = 'none';
+                    
+                    // 更强烈的强调动画
+                    setTimeout(() => {
+                        element.style.transform = 'scale(1.3)';
+                        element.style.textShadow = '0 0 12px rgba(255, 69, 0, 0.9)';
+                        setTimeout(() => {
+                            element.style.transform = 'scale(1)';
+                            element.style.textShadow = 'none';
+                        }, 100);
+                    }, 50);
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // 实现水平向左消逝的翻页效果
+        function scrollToNextPage() {
+            // 获取当前所有排行项
+            const currentItems = document.querySelectorAll('.ranking-item');
+            
+            // 添加向左消逝的动画
+            currentItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.transform = 'translateX(-100%)';
+                    item.style.opacity = '0';
+                }, index * 50); // 依次消失
+            });
+            
+            // 延迟加载下一页
+            setTimeout(() => {
+                // 更新到下一页
+                currentPage = (currentPage + 1) % totalPages;
+                
+                // 重新渲染当前页
+                renderCurrentPage();
+            }, 500); // 等待动画完成
+        }
+        
+        // 初始渲染
+        renderCurrentPage();
+        
+        // 添加：页面加载后立即对所有热度值应用动画效果
+        function animateAllHeatValuesOnLoad() {
+            setTimeout(() => {
+                const currentItems = document.querySelectorAll('.ranking-item');
+                currentItems.forEach((item, index) => {
+                    const heatElement = item.querySelector('.movie-heat');
+                    if (heatElement) {
+                        // 提取当前热度值
+                        const numberText = heatElement.textContent.replace('🔥', '').trim();
+                        const currentHeat = parseInt(numberText);
+                        
+                        // 从一个略低的值动画到当前值，创造载入动画效果
+                        const startValue = Math.max(0, currentHeat - 500);
+                        animateNumberChange(heatElement, startValue, currentHeat);
+                    }
+                });
+            }, 500); // 延迟执行，确保页面元素已完全渲染
+        }
+        
+        // 立即执行初始动画
+        animateAllHeatValuesOnLoad();
+        
+        // 添加：每1.5秒更新一次热度值并应用动画
+        setInterval(() => {
+            // 先更新热度
+            const updatedMovies = updateHeat();
+            
+            // 检查当前页面是否有热度变化的电影，如果有则在当前页进行动画
+            const currentItems = document.querySelectorAll('.ranking-item');
+            const movieNames = Array.from(currentItems).map(item => 
+                item.querySelector('.movie-name').textContent
+            );
+            
+            updatedMovies.forEach(update => {
+                const movie = moviesData[update.index];
+                const itemIndex = movieNames.indexOf(movie.name);
+                
+                if (itemIndex !== -1) {
+                    // 如果电影在当前页面，直接对热度数值进行动画
+                    const heatElement = currentItems[itemIndex].querySelector('.movie-heat');
+                    if (heatElement) {
+                        animateNumberChange(heatElement, update.oldValue, update.newValue);
+                    }
+                }
+            });
+        }, 1500); // 1.5秒刷新一次热度值
+        
+        // 添加：保留原有的翻页功能，但移除热度更新部分
+        setInterval(() => {
+            scrollToNextPage();
+        }, 4000);
+    }
+    
+    // 当页面加载完成后初始化评分排行榜
+    window.addEventListener('load', function() {
+        initVehicleCharts();
+        initMovieRatingRanking();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1090 @@
+/*大屏*/
+*{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box}
+*,body{padding:0px;	margin:0px;color: #222;font-family: "微软雅黑";}
+html,body{
+    background: url("../images/bg01.png") no-repeat;
+    background-size: cover;
+    font-size: .16rem;
+    color: #ffffff;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+ul,ol{
+    list-style: none;
+}
+.allnav{
+    height: 100%;
+}
+/*谷哥滚动条样式*/
+
+::-webkit-scrollbar {width:5px;height:5px;position:absolute}
+::-webkit-scrollbar-thumb {background-color:#5bc0de}
+::-webkit-scrollbar-track {background-color:#ddd}
+
+/***/
+.allnav{
+    height: 100%;
+}
+
+/*
+头部*/
+.header{
+    width: 100%;
+    height: 1.5rem;
+    /*background: red;*/
+
+}
+.header .header-left{
+    width: 25%;
+    height: 1.05rem;
+    color: white;
+/*    border: 1px solid green;*/
+    text-align: center;
+    line-height: 1.05rem;
+}
+/* 增强猫眼电影标题的科技感效果 - 高级动态版本 */
+.header .header-center{
+    width: 50%;
+    height: 1.05rem;
+    /*border: 1px solid red;*/
+/*    background: url("../images/head.gif") no-repeat;
+    background-size: 100% 100%;*/
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header .header-center .header-title{
+    text-align: center;
+    color: #ffffff;
+    font-size: .4rem;
+    font-weight: bold;
+    line-height: 1.05rem;
+    position: relative;
+    z-index: 2;
+    letter-spacing: 0.15rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* 为每个字符添加高级动画效果 */
+.header-title span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px) rotateY(90deg);
+    animation: fadeInRotate 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    position: relative;
+    transform-origin: center bottom;
+    /* 增强版霓虹灯光效果 */
+    text-shadow:
+        0 0 5px #00d8ff,
+        0 0 10px #00d8ff,
+        0 0 20px #00d8ff,
+        0 0 40px #00d8ff,
+        0 0 80px #00d8ff,
+        0 0 90px #00d8ff,
+        0 0 100px #00d8ff,
+        0 0 150px #00d8ff;
+    animation: neonPulse 2s ease-in-out infinite;
+}
+
+/* 为每个字符设置不同的动画延迟 */
+.header-title span:nth-child(1) { animation-delay: 0.1s; }
+.header-title span:nth-child(2) { animation-delay: 0.3s; }
+.header-title span:nth-child(3) { animation-delay: 0.5s; }
+.header-title span:nth-child(4) { animation-delay: 0.7s; }
+
+/* 霓虹灯光脉冲效果，每个字符不同相位 */
+.header-title span:nth-child(1) { animation-delay: 0s; }
+.header-title span:nth-child(2) { animation-delay: 0.2s; }
+.header-title span:nth-child(3) { animation-delay: 0.4s; }
+.header-title span:nth-child(4) { animation-delay: 0.6s; }
+
+/* 3D旋转出现动画 */
+@keyframes fadeInRotate {
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateY(0deg);
+    }
+}
+
+/* 增强版霓虹灯光脉冲效果 */
+@keyframes neonPulse {
+    0%, 100% {
+        text-shadow:
+            0 0 5px #00d8ff,
+            0 0 10px #00d8ff,
+            0 0 20px #00d8ff,
+            0 0 40px #00d8ff,
+            0 0 80px #00d8ff,
+            0 0 90px #00d8ff,
+            0 0 100px #00d8ff,
+            0 0 150px #00d8ff;
+        color: #ffffff;
+    }
+    50% {
+        text-shadow:
+            0 0 7px #00d8ff,
+            0 0 15px #00d8ff,
+            0 0 30px #00d8ff,
+            0 0 60px #00d8ff,
+            0 0 120px #00d8ff,
+            0 0 135px #00d8ff,
+            0 0 150px #00d8ff,
+            0 0 225px #00d8ff;
+        color: #e6f7ff;
+        transform: scale(1.03);
+    }
+}
+
+/* 升级扫描线效果 */
+.header-center::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #00d8ff, #00a8ff, transparent);
+    animation: scanline 2s linear infinite;
+    z-index: 3;
+    box-shadow: 0 0 10px #00d8ff;
+}
+
+@keyframes scanline {
+    0% { top: -10%; }
+    50% { 
+        top: 110%; 
+        background: linear-gradient(90deg, transparent, #00ffcc, #00d8ff, transparent);
+    }
+    100% { top: -10%; }
+}
+
+/* 增强版标题下方的科技感光晕 */
+.header-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 10%;
+    width: 80%;
+    height: 6px;
+    background: linear-gradient(90deg, transparent, #00d8ff, #00a8ff, #00d8ff, transparent);
+    border-radius: 50%;
+    filter: blur(4px);
+    opacity: 0.7;
+    animation: glowPulse 2s ease-in-out infinite;
+    box-shadow: 0 0 15px #00d8ff;
+}
+
+@keyframes glowPulse {
+    0%, 100% { opacity: 0.5; width: 60%; left: 20%; }
+    50% { opacity: 0.9; width: 90%; left: 5%; }
+}
+
+/* 保持原有的背景图片 */
+.header .header-img{
+    background: url("../images/head.gif") no-repeat center center;
+    background-size: 100%;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: .4rem;
+    z-index: 1;
+    opacity: 0.5;
+}
+
+/* 升级标题容器背景光效 - 添加网格线和动态波浪 */
+.header-center::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 50% 50%, rgba(0, 216, 255, 0.2), transparent 70%),
+        linear-gradient(to bottom, transparent 0%, rgba(0, 216, 255, 0.1) 50%, transparent 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 216, 255, 0.1) 2px, rgba(0, 216, 255, 0.1) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 216, 255, 0.1) 2px, rgba(0, 216, 255, 0.1) 4px);
+    z-index: 0;
+    animation: backgroundGlow 3s ease-in-out infinite;
+}
+
+@keyframes backgroundGlow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+}
+
+/* 添加动态粒子效果 */
+.header-center .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.header-center .particle {
+    position: absolute;
+    background: #00d8ff;
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFloat 4s infinite ease-in-out;
+}
+
+/* 为标题添加悬停交互效果 */
+.header-title:hover {
+    animation: titleHover 0.5s forwards ease-out;
+}
+
+@keyframes titleHover {
+    to {
+        transform: translateY(-5px);
+        text-shadow: 0 0 15px rgba(0, 216, 255, 0.8);
+    }
+}
+
+/* 为每个字符添加悬浮效果 */
+.header-title span:hover {
+    transform: translateY(-5px) scale(1.1);
+    text-shadow:
+        0 0 10px #00d8ff,
+        0 0 20px #00d8ff,
+        0 0 40px #00d8ff,
+        0 0 80px #00d8ff,
+        0 0 160px #00d8ff;
+    z-index: 5;
+    transition: all 0.3s ease;
+}
+
+
+.header .header-right{
+    width: 25%;
+    height: 1.05rem;
+    /*border: 1px solid gold;*/
+}
+.header .header-bottom{
+    width: calc(100% - .4rem);
+    height: .16rem;
+    background: url("../images/header.png") no-repeat;
+    background-size: calc(100% - .2rem) 100%;
+    padding: 0 .2rem;
+    margin-left: .3rem;
+
+}
+
+/*
+内容*/
+.center{
+    padding: .1rem .2rem .1rem .2rem;
+}
+.center .center-left{
+    width: 25%;
+    padding: .1rem;
+/*    border: 1px solid red;*/
+
+}
+.center .center-left .left-top{
+    width: 100%;
+    height: 6.3rem; /* 进一步增加高度，确保足够空间显示完整的图例文本 */
+    margin-bottom: 0.2rem;
+    border: 0.01rem solid #217093;
+    position: relative;
+    overflow: visible;
+}
+.center .center-left .left-top h1{
+    color: white;
+    font-size: .4rem;
+    transform: rotateX(0deg);
+    /*display: flex;*/
+    align-items: center;
+    margin-bottom: 8px;
+    position: relative;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    transform-origin: 50% 50%;
+    /*transform: rotateX(0deg);*/
+    /*width: 100%;*/
+    transition: transform 500ms cubic-bezier(0.15, 0.52, 0.5, 0.9) 0s;
+    /*height: 24px;*/
+    /*过渡效果*/
+    transition: all 1s;
+}
+/*.center .center-left .left-top h1:hover{
+    transform: rotateX(360deg);
+    transition: all 2s;
+}*/
+
+.title{
+    width: 90%;
+    height: 0.4rem; /* 增加高度以适应更大字体 */
+    position: relative;
+    top:.1rem;
+    left: .25rem;
+    color: white;
+    padding-left: 0.4rem; /* 增加左侧 padding 为图标腾出空间 */
+    line-height: 0.4rem;
+    font-size: .28rem; /* 增大字体大小 */
+    font-weight: bold; /* 加粗字体 */
+    
+}
+
+/* 实时数据标题向下移动 */
+.center-cen .cen-bottom .title {
+    top: .3rem; /* 从.1rem增加到.3rem，向下移动0.2rem */
+}
+
+/* 调整top-bottom标题位置与cen-bottom对齐 */
+.top-bottom .title {
+    left: 0.05rem; /* 抵消容器padding，与cen-bottom标题左对齐 */
+    top: -0.15rem; /* 大幅向上移动标题 */
+}
+
+/* 在标题前添加科技感图标 */
+.title::before {
+    content: '\00BB'; /* 使用双大于号作为基础图标 */
+    position: absolute;
+    left: 0.12rem;
+    color: #00e5ff; /* 科技蓝颜色 */
+    font-size: .3rem;
+    text-shadow: 0 0 5px #00e5ff; /* 发光效果 */
+}
+
+/* 受众群体分布图标 */
+.left-top .title::before {
+    content: '\260E'; /* 电话符号，代表联系/群体 */
+    position: absolute;
+    left: -0.1rem; /* 从0.12rem调整为-0.1rem，向左移动0.22rem */
+    color: #00e5ff;
+    font-size: .3rem;
+    text-shadow: 0 0 5px #00e5ff;
+}
+
+/* 电影梗概图标 */
+.left-cen .title::before {
+    content: '\1F4D6'; /* 书本符号，代表内容/梗概 */
+    position: absolute;
+    left: -0.1rem; /* 从0.12rem调整为-0.1rem，向左移动0.22rem */
+    color: #00e5ff;
+    font-size: .3rem;
+    text-shadow: 0 0 5px #00e5ff;
+}
+
+/* 电影排行榜图标 */
+.right-top .title::before {
+    content: '\1F3C6'; /* 奖杯符号，代表排名 */
+    position: absolute;
+    left: -0.1rem; /* 从0.12rem调整为-0.1rem，向左移动0.22rem */
+    color: #00e5ff;
+    font-size: .3rem;
+    text-shadow: 0 0 5px #00e5ff;
+}
+
+/* 电影类型分布图标 */
+.right-cen-full .title::before {
+    content: '\1F3A0'; /* 电影摄像机符号，代表电影类型 */
+    position: absolute;
+    left: -0.1rem; /* 从0.12rem调整为-0.1rem，向左移动0.22rem */
+    color: #00e5ff;
+    font-size: .3rem;
+    text-shadow: 0 0 5px #00e5ff;
+}
+.top-list p{
+    font-size: .18rem;
+    color: #029698;
+    padding: .3rem;
+}
+.top-list li{
+    float: left;
+    font-size: .2rem;
+    color: #ffffff;
+    width: 50%;
+    height: .4rem;
+    line-height: .4rem;
+    padding: .2rem;
+}
+
+
+.center .center-left .left-cen{
+    width: 100%;
+    height: 3.6rem; /* 保持延长的蓝色框线高度 */
+    margin-bottom: .4rem;
+    border: 0.01rem solid #217093;
+    margin-top: 0.5rem; /* 减小上边距，使栏目再上移一些 */
+    /*background: url("../images/panel.png") no-repeat;
+    background-size: 100% 100%;*/
+}
+    /*background: url("../images/panel.png") no-repeat;
+    background-size: 100% 100%;*/
+    /*border: 0.01rem solid #217093;
+    margin-top: 0.6rem; /* 减小上边距，使栏目略微上移 */
+/*}*/
+
+.center .center-left .left-cen .company{
+    width: calc(100% - .2rem);
+    height: calc(100% - .6rem); /* 调整内部容器高度以适应新的外部容器高度 */
+    margin-left: .1rem;
+    margin-top: .1rem;
+    /*border: 1px solid red;*/
+    padding: .2rem;
+    box-sizing: border-box;
+}
+.center .center-left .left-cen .company li{
+    color: white;
+    height: .3rem;
+    line-height: .3rem;
+}
+
+/* 删除left-bottom样式定义 */
+.center .center-left .bottom-b{
+    width: calc(100% - 0.2rem);
+    height: 2.6rem;
+    margin-left: 0.1rem;
+    margin-top: 0.1rem;
+}
+.center .center-cen{
+    width: 50%;
+    padding: .1rem;
+}
+/* 删除电影数据区域的框线 */
+.center .center-cen .cen-top {
+    width: 100%;
+    height: 10.4rem; /* 略微增加高度，使框线再向下延伸一小点 */
+    /*background: url("../images/a.png") no-repeat;
+    background-size: 100% 100%;*/
+    border: none; /* 删除边框 */
+    box-shadow: none; /* 删除阴影 */
+    margin-bottom: 0; /* 移除底部间距 */
+    position: relative;
+    margin-top: 0rem; /* 向上微调位置，使框线向上延伸 */
+}
+
+/* 调整图表容器的位置，确保内容显示在正确位置 */
+.center .center-cen .cen-top .top-bottom {
+    width: 100%;
+    height: 4.8rem;
+    position: absolute;
+    top: 0; /* 改回0，确保标题显示在可视区域内 */
+    left: 0;
+    padding: .2rem;
+    border: 0.01rem solid #217093; /* 添加边框 */
+    box-shadow: 0 0 0.1rem rgba(33, 112, 147, 0.6); /* 添加阴影 */
+}
+    /*top: 38%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    padding: .2rem;
+}*/
+
+
+.center .center-cen .cen-bottom{
+    width: 100%;
+    height: 5.5rem;
+    border: none; /* 移除边框线 */
+    box-shadow: none; /* 确保移除阴影效果 */
+    background: transparent; /* 确保背景透明 */
+    margin: 0; /* 移除所有外边距 */
+    padding: 0; /* 移除所有内边距 */
+    margin-top:-5.5rem;
+}
+
+.center .center-cen .bottom-b{
+    width: calc(100% - 0.2rem);
+    height: 2.6rem;
+    margin-left: 0.1rem;
+    margin-top: 0.1rem;
+    border: none; /* 移除子容器边框 */
+    box-shadow: none; /* 移除子容器阴影 */
+    background: transparent; /* 确保子容器背景透明 */
+}
+
+/* 修改右侧区域布局 */
+.center .center-right {
+    width: 26%; /* 稍微增加右侧区域宽度 */
+    padding: .1rem;
+}
+
+/* 修改排行榜区域的高度 */
+.center .center-right .right-top {
+    width: 100%;
+    height: 4.7rem;  /* 从3.2rem增加到4.7rem，向下延伸1.5厘米 */
+    margin-bottom: .4rem;
+    border: 0.01rem solid rgba(33, 112, 147, 0.6);
+    box-shadow: 0 0 0.1rem rgba(33, 112, 147, 0.3);
+    overflow: hidden; /* 防止内容溢出 */
+}
+
+/* 添加新的全宽区域样式 */
+.center .center-right .right-cen-full {
+    width: 100%;
+    height: 5.3rem;  /* 从6.8rem减少到5.3rem，向下压缩1.5厘米 */
+    border: 0.01rem solid rgba(33, 112, 147, 0.6);
+    box-shadow: 0 0 0.1rem rgba(33, 112, 147, 0.3);
+    padding: 0.1rem; /* 添加内边距，确保内容不贴近边框 */
+    box-sizing: border-box;
+    overflow: hidden; /* 防止内容溢出 */
+}
+
+/* 调整左侧区域宽度，以适应右侧增加的宽度 */
+.center .center-left {
+    width: 24%;
+    padding: .1rem;
+}
+
+/* 调整中间区域宽度 */
+.center .center-cen {
+    width: 50%;
+    padding: .1rem;
+}
+
+/* 确保图表容器不会超出父元素 */
+#chart2 {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* 调整其他边框样式 */
+.center .center-left .left-top,
+.center .center-left .left-cen,
+/* 删除left-bottom */
+.center .center-cen .cen-bottom {
+    border: 0.01rem solid rgba(33, 112, 147, 0.6);
+    box-shadow: 0 0 0.1rem rgba(33, 112, 147, 0.3);
+    overflow: hidden; /* 防止内容溢出 */
+}
+
+/* 确保所有容器元素都考虑padding和border */
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.allnav {
+    width: 100% !important;
+    height: calc(100% - 0.4rem) !important;
+    margin-top: -0.1rem;
+}
+.center .center-right .right-cen{
+    width: 100%;
+    height: 3.2rem;
+    margin-bottom: .4rem;
+    border: 0.01rem solid #217093;
+}
+
+
+
+
+.gun{
+    /* width: 100%;*/
+    margin-top: .2rem;
+}
+.gun span{
+    display: block;
+    float: left;
+    height: .2rem;
+    width: 33%;
+    /*background: red;*/
+    /*margin: 15px 10px 10px 10px;*/
+    /*padding: 20px;*/
+    text-align: center;
+    font-size: 0.14rem;
+    font-weight: 600;
+    color: #61d2f7;
+    text-align: center;
+    margin-bottom: .1rem;
+}
+#FontScroll{
+    width: 100%;
+    height: 2.3rem;
+    overflow: hidden;
+    /*float: left;*/
+    margin-top: .1rem;
+    /*margin: 0 5%;*/
+    /*margin-left: 50px;*/
+
+    /*background: gold;*/
+
+}
+#FontScroll ul li{
+    height: .32rem;
+    width: 100%;
+    color: #ffffff;
+    text-align: center;
+    line-height: .32rem;
+    /*border-bottom: 1px dashed #404040;*/
+    /*width:33.3%;*/
+    overflow: hidden;
+    font-size: 0.14rem;
+    /*border-bottom: 1px dashed #404040;*/
+    /*width:33.3%;*/
+
+
+    /*background: red;
+    margin: 0 2%;*/
+
+}
+#FontScroll ul li:nth-child(1){
+    /*background-color: #072951;*/
+    box-shadow: -10px 0px 15px #034c6a inset, /*左边阴影*/
+    10px 0px 15px #034c6a inset;
+
+}
+#FontScroll ul li:hover{
+    box-shadow: -10px 0px 15px #034c6a inset, /*左边阴影*/
+    10px 0px 15px #034c6a inset;
+    cursor: pointer;
+}
+
+.fontInner span{
+    display:inline-block;
+    /*float: left;*/
+    /*height: 20px;*/
+    width:31%;
+    color: #ffffff;
+
+    /*background: red;*/
+
+}
+.fontInner span b{
+    display: inline-block;
+    width: .2rem;
+    height: .2rem;
+    border-radius: 0.03rem;
+    color: #ffffff;
+    line-height: .2rem;
+}
+/*#FontScroll ul li:nth-child(1) .fontInner span b{
+    background: #EB6841
+
+}*/
+/*大屏*/
+#FontScroll ul li:nth-child(8n-4) .fontInner span b{ background: #20a8fe }
+#FontScroll ul li:nth-child(8n-3) .fontInner span b{ background: #EB6841 }
+#FontScroll ul li:nth-child(8n-2) .fontInner span b{ background: #3FB8AF }
+#FontScroll ul li:nth-child(8n-1) .fontInner span b{ background: #FE4365 }
+#FontScroll ul li:nth-child(8n-5) .fontInner span b{ background: #FC9D9A }
+#FontScroll ul li:nth-child(8n-6) .fontInner span b{ background: #EDC951 }
+#FontScroll ul li:nth-child(8n-7) .fontInner span b{ background: #C8C8A9 }
+#FontScroll ul li:nth-child(8n) .fontInner span b{ background: #83AF9B }
+#FontScroll ul li:first-child .fontInner span b{ background: #036564 }
+#FontScroll ul li:last-child .fontInner span b{ background: #3299BB }
+/* 电影资讯区域样式 */
+.movie-news-container {
+    width: calc(100% - 0.4rem);
+    margin: 0.2rem auto;
+    background: linear-gradient(135deg, rgba(33, 112, 147, 0.3), rgba(3, 76, 106, 0.5));
+    border-radius: 8px;
+    padding: 0.15rem;
+    box-shadow: 0 0 15px rgba(3, 76, 106, 0.5) inset;
+    overflow: hidden;
+    position: relative;
+    height: 1.8rem; /* 固定容器高度，适应5个链接滚动 */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* 资讯链接样式 - 修改为绝对定位以实现循环滚动 */
+.news-link {
+    display: flex;
+    align-items: center;
+    padding: 0.15rem 0.25rem;
+    margin: 0.05rem 0;
+    color: #ffffff; /* 增强颜色亮度 */
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 0.4rem);
+    opacity: 0;
+    font-size: 0.17rem;
+    font-weight: 600;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.7);
+    z-index: 1;
+    background: rgba(3, 76, 106, 0.4); /* 添加半透明背景 */
+    backdrop-filter: blur(5px); /* 添加毛玻璃效果 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    animation: cycleLinks 15s linear infinite; /* 循环动画 */
+}
+
+/* 为每个链接设置不同的动画延迟和起始位置 */
+.news-link:nth-child(1) { animation-delay: 0s; }
+.news-link:nth-child(2) { animation-delay: 3s; }
+.news-link:nth-child(3) { animation-delay: 6s; }
+.news-link:nth-child(4) { animation-delay: 9s; }
+.news-link:nth-child(5) { animation-delay: 12s; }
+
+/* 循环滚动动画 */
+@keyframes cycleLinks {
+    /* 初始状态：隐藏在底部 */
+    0% {
+        top: 120%;
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    /* 进入动画：从底部上升至顶部位置 */
+    5% {
+        top: 10%;
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    /* 停留：在顶部位置保持一段时间 */
+    15% {
+        top: 10%;
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    /* 退出动画：从顶部移动到底部并隐藏 */
+    20% {
+        top: -20%;
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    /* 移动到底部准备下一轮 */
+    20.01% {
+        top: 120%;
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    /* 等待下一轮 */
+    100% {
+        top: 120%;
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+}
+
+/* 链接悬停效果增强 */
+.news-link:hover {
+    background: rgba(89, 235, 232, 0.4);
+    box-shadow: 0 0 15px rgba(89, 235, 232, 0.8);
+    z-index: 10; /* 悬停时置于最上层 */
+    animation-play-state: paused; /* 悬停时暂停动画 */
+}
+
+/* 链接图标样式 */
+.news-icon {
+    width: 0.28rem;
+    height: 0.28rem;
+    margin-right: 0.15rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+
+/* 图标脉冲动画 */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* 定义不同链接的图标 */
+.home-icon:before { content: "🏠"; }
+.play-icon:before { content: "🎬"; }
+.upcoming-icon:before { content: "📅"; }
+.review-icon:before { content: "📝"; }
+.chart-icon:before { content: "📊"; }
+
+/* 滚动资讯样式增强 */
+.news-ticker {
+    width: calc(100% - 0.4rem);
+    height: 0.9rem;
+    margin: 0.2rem auto 0;
+    background: rgba(3, 76, 106, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 10px rgba(89, 235, 232, 0.3);
+}
+
+.ticker-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: ticker-scroll 12s ease-in-out infinite;
+}
+
+.ticker-item {
+    height: 0.9rem;
+    line-height: 0.9rem;
+    text-align: center;
+    color: #ffffff; /* 改为更亮的白色 */
+    font-size: 0.18rem;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(89, 235, 232, 0.8);
+}
+
+/* 改进的滚动动画 */
+@keyframes ticker-scroll {
+    0% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(0); /* 短暂停留 */
+    }
+    35% {
+        transform: translateY(-0.9rem); /* 快速过渡 */
+    }
+    65% {
+        transform: translateY(-0.9rem); /* 短暂停留 */
+    }
+    70% {
+        transform: translateY(-1.8rem); /* 快速过渡 */
+    }
+    95% {
+        transform: translateY(-1.8rem); /* 短暂停留 */
+    }
+    100% {
+        transform: translateY(0); /* 快速回到顶部 */
+    }
+}
+
+/* 增加容器边框发光效果 */
+.movie-news-container,
+.news-ticker {
+    border: 1px solid rgba(89, 235, 232, 0.5);
+    animation: borderGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes borderGlow {
+    from {
+        box-shadow: 0 0 5px rgba(89, 235, 232, 0.3);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(89, 235, 232, 0.7);
+    }
+}
+/* 大屏样式增强 */
+/* 增强左上角时间显示的科技感样式 */
+.header-left {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 1.5rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    color: #59ebe8; /* 科技感的亮蓝色 */
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+#time {
+    font-size: 0.24rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* 单个数字的科技感样式 */
+.time-number {
+    display: inline-block;
+    min-width: 0.3rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.1s ease;
+    text-shadow: 0 0 0.05rem #59ebe8, 0 0 0.1rem rgba(89, 235, 232, 0.5);
+}
+
+/* 秒数的特殊效果 */
+.time-number.second {
+    color: #ff4d4d;
+    text-shadow: 0 0 0.05rem #ff4d4d, 0 0 0.1rem rgba(255, 77, 77, 0.5);
+}
+
+/* 星期的样式 */
+.time-week {
+    color: #a8ff78;
+    text-shadow: 0 0 0.05rem #a8ff78, 0 0 0.1rem rgba(168, 255, 120, 0.5);
+}
+
+/* 时间分隔符的闪烁效果 */
+.time-separator {
+    display: inline-block;
+    width: 0.1rem;
+    text-align: center;
+    opacity: 1;
+    animation: separator-blink 1s infinite;
+}
+
+@keyframes separator-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+/* 数字脉冲效果 */
+.pulse {
+    animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* 扫描线效果 */
+.header-left::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(89, 235, 232, 0.1), transparent);
+    transform: translateX(-100%);
+    animation: scanline 5s linear infinite;
+    z-index: 1;
+}
+
+@keyframes scanline {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* 在CSS文件末尾添加以下代码 */
+/* 删除中下部栏目蓝色框线 */
+#chart4 {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* 确保父容器也没有边框 */
+.center .center-cen .cen-bottom #chart4,
+.center .center-cen .bottom-b #chart4 {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: transparent !important;
+}
+/* 找到文件末尾，修改或替换之前添加的样式 */
+/* 针对中下部电影数据分析区域移除蓝色框线 */
+/* 1. 移除容器自身的边框 */
+.center .center-cen .cen-bottom,
+.center .center-cen .cen-bottom .bottom-b,
+.center .center-cen .cen-bottom .bottom-b #chart4 {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: transparent !important;
+}
+
+/* 2. 确保所有可能影响的类都没有边框 */
+.allnav {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* 3. 特别针对#chart4元素增加高优先级样式 */
+#chart4 {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: transparent !important;
+}
+
+/* 今日影讯链接样式 - 科技感设计 */
+.header .header-right {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.movie-news-link {
+    display: flex;
+    align-items: center;
+    color: #59ebe8;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 0.32rem; /* 增大字体大小从0.24rem到0.32rem */
+    letter-spacing: 1px;
+    text-decoration: none;
+    position: relative;
+    z-index: 2;
+    padding: 0.2rem 0.4rem; /* 增加内边距以匹配更大的字体 */
+    border: 0.01rem solid rgba(89, 235, 232, 0.3);
+    border-radius: 0.3rem;
+    background: rgba(0, 40, 60, 0.2);
+    transition: all 0.3s ease;
+    text-shadow: 0 0 0.05rem #59ebe8, 0 0 0.1rem rgba(89, 235, 232, 0.5);
+    animation: textGradient 2s ease-in-out infinite alternate; /* 添加渐变闪烁动画 */
+}
+
+.movie-news-link:hover {
+    background: rgba(0, 40, 60, 0.4);
+    transform: scale(1.05);
+    box-shadow: 0 0 0.2rem rgba(89, 235, 232, 0.5);
+}
+
+.news-text {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.news-arrow {
+    margin-left: 0.15rem;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+.movie-news-link:hover .news-arrow {
+    margin-left: 0.25rem;
+    opacity: 1;
+    transform: translateX(0.05rem);
+}
+
+/* 扫描线效果 - 与时间显示相同的科技感 */
+.header .header-right::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(89, 235, 232, 0.1), transparent);
+    transform: translateX(100%);
+    animation: scanline 5s linear infinite;
+    z-index: 1;
+}
+
+@keyframes scanline {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
